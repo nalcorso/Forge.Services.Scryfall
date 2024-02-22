@@ -61,7 +61,7 @@ public sealed class ScryfallClient
         return new ScryfallClientBuilder();
     }
     
-    internal async Task<T> GetAsync<T>(string url) where T : ResponseObjectBase
+    internal async Task<Optional<T>> GetAsync<T>(string url) where T : ResponseObjectBase
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
         
@@ -71,7 +71,7 @@ public sealed class ScryfallClient
             if (_cache.TryGetValue(url, out T? cached))
             {
                 _logger.LogDebug("Cache hit for {url}", url);
-                return cached!;
+                return Optional<T>.Of(cached!);
             }
         }
         
@@ -86,7 +86,7 @@ public sealed class ScryfallClient
             if (result is not null)
             {
                 _cache?.Set(url, result, _cacheOptions);
-                return result;
+                return Optional<T>.Of(result);
             }
         }
         catch (JsonException ex)
@@ -102,7 +102,8 @@ public sealed class ScryfallClient
         {
             _logger.LogWarning(warning);
         }
-        throw new InvalidOperationException(error.Details);
+        
+        return Optional<T>.OfException(new InvalidOperationException(error.Details));
     }
 }
 

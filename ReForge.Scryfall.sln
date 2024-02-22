@@ -16,6 +16,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReForge.Scryfall.BasicSynta
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{BA9B8941-4CD1-4638-8C78-493005A9BEBD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{B11FF70D-E0AF-4CFE-BDFE-C48E535C71DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReForge.Optional", "submodules\ReForge.Optional\src\ReForge.Optional\ReForge.Optional.csproj", "{956D162E-3FCA-4F7C-A07F-A04C10F21DE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,8 +37,13 @@ Global
 		{31526CCB-F231-4070-BD6A-81427EE17B31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31526CCB-F231-4070-BD6A-81427EE17B31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31526CCB-F231-4070-BD6A-81427EE17B31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{956D162E-3FCA-4F7C-A07F-A04C10F21DE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{956D162E-3FCA-4F7C-A07F-A04C10F21DE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{956D162E-3FCA-4F7C-A07F-A04C10F21DE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{956D162E-3FCA-4F7C-A07F-A04C10F21DE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{31526CCB-F231-4070-BD6A-81427EE17B31} = {BA9B8941-4CD1-4638-8C78-493005A9BEBD}
+		{956D162E-3FCA-4F7C-A07F-A04C10F21DE7} = {B11FF70D-E0AF-4CFE-BDFE-C48E535C71DC}
 	EndGlobalSection
 EndGlobal

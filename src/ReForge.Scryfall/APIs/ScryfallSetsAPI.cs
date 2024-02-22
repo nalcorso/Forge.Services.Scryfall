@@ -11,22 +11,22 @@ public class ScryfallSetsAPI
         _client = client;
     }
     
-    public Task<ListObject<Set>> AllAsync()
+    public Task<Optional<ListObject<Set>>> AllAsync()
     {
         return _client.GetAsync<ListObject<Set>>("sets");
     }
     
-    public Task<Set> ByCodeAsync(string code)
+    public Task<Optional<Set>> ByCodeAsync(string code)
     {
         return _client.GetAsync<Set>($"sets/{code}");
     }
     
-    public Task<Set> ByTcgPlayerIdAsync(int id)
+    public Task<Optional<Set>> ByTcgPlayerIdAsync(int id)
     {
         return _client.GetAsync<Set>($"sets/tcgplayer/{id}");
     }
     
-    public Task<Set> ByIdAsync(Guid id)
+    public Task<Optional<Set>> ByIdAsync(Guid id)
     {
         return _client.GetAsync<Set>($"sets/{id}");
     }

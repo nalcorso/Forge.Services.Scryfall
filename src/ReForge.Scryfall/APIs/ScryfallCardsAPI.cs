@@ -45,7 +45,7 @@ public class ScryfallCardsAPI
         _client = client;
     }
     
-    public Task<ListObject<Card>> SearchAsync(
+    public Task<Optional<ListObject<Card>>> SearchAsync(
         string query, 
         UniqueMode unique = UniqueMode.Cards, 
         SortMode order = SortMode.Name, 
@@ -58,12 +58,12 @@ public class ScryfallCardsAPI
         return _client.GetAsync<ListObject<Card>>($"cards/search?q={query}&unique={unique.ToString().ToLower()}&order={order.ToString().ToLower()}&dir={dir.ToString().ToLower()}&include_extras={includeExtras}&include_multilingual={includeMultilingual}&include_variations={includeVariations}&page={page}");
     }
     
-    public Task<Card> NamedExactAsync(string name)
+    public Task<Optional<Card>> NamedExactAsync(string name)
     {
         return _client.GetAsync<Card>($"cards/named?exact={name}");
     }
 
-    public Task<Card> RandomAsync()
+    public Task<Optional<Card>> RandomAsync()
     {
         return _client.GetAsync<Card>("cards/search?q=is%3Aslick+cmc%3Ecmc");
         //return _client.GetAsync<Card>("cards/random");

@@ -11,4 +11,8 @@
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0-preview.1.24080.9" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\submodules\ReForge.Optional\src\ReForge.Optional\ReForge.Optional.csproj" />
+    </ItemGroup>
+
 </Project>
