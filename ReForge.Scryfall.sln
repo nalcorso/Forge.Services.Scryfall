@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EF67CAA3-EF2D-4358-9CF5-87D7D1BE6826}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReForge.Scryfall", "src\ReForge.Scryfall\ReForge.Scryfall.csproj", "{BA75E744-0604-4482-A190-3753D4B1155D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReForge.Scryfall.BasicSyntax", "samples\ReForge.Scryfall.BasicSyntax\ReForge.Scryfall.BasicSyntax.csproj", "{31526CCB-F231-4070-BD6A-81427EE17B31}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{BA9B8941-4CD1-4638-8C78-493005A9BEBD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA75E744-0604-4482-A190-3753D4B1155D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA75E744-0604-4482-A190-3753D4B1155D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA75E744-0604-4482-A190-3753D4B1155D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA75E744-0604-4482-A190-3753D4B1155D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31526CCB-F231-4070-BD6A-81427EE17B31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31526CCB-F231-4070-BD6A-81427EE17B31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31526CCB-F231-4070-BD6A-81427EE17B31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31526CCB-F231-4070-BD6A-81427EE17B31}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{31526CCB-F231-4070-BD6A-81427EE17B31} = {BA9B8941-4CD1-4638-8C78-493005A9BEBD}
+	EndGlobalSection
+EndGlobal
