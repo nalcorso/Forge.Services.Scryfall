@@ -1,3 +1,6 @@
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using ReForge.Scryfall.Models;
 
 namespace ReForge.Scryfall.APIs;
@@ -38,13 +41,20 @@ public enum SortOrder
 //FIXME: We may want to implement an interface at some point for testing
 public class ScryfallCardsAPI
 {
+    private const int MAX_QUERY_LENGTH = 256;
     private readonly ScryfallClient _client;
+    
+    private readonly JsonSerializerOptions jsonSerializerOptions = new()
+    {
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+    };
 
     internal ScryfallCardsAPI(ScryfallClient client)
     {
         _client = client;
     }
     
+    //FIXME: Add support for missing parameters: format, pretty
     public Task<Optional<ListObject<Card>>> SearchAsync(
         string query, 
         UniqueMode unique = UniqueMode.Cards, 
@@ -55,17 +65,122 @@ public class ScryfallCardsAPI
         bool includeVariations = false, 
         int page = 1)
     {
-        return _client.GetAsync<ListObject<Card>>($"cards/search?q={query}&unique={unique.ToString().ToLower()}&order={order.ToString().ToLower()}&dir={dir.ToString().ToLower()}&include_extras={includeExtras}&include_multilingual={includeMultilingual}&include_variations={includeVariations}&page={page}");
+        if (string.IsNullOrEmpty(query))
+            throw new ArgumentException("Value cannot be null or empty.", nameof(query));
+        
+        if (query.Length > MAX_QUERY_LENGTH)
+            throw new ArgumentException($"Value must be at most {MAX_QUERY_LENGTH} characters long.", nameof(query));
+        
+        if (page < 1)
+            throw new ArgumentOutOfRangeException(nameof(page), "Value must be at least 1.");
+        
+        var encodedQuery = System.Net.WebUtility.UrlEncode(query);
+        
+        return _client.GetAsync<ListObject<Card>>($"cards/search?q={encodedQuery}&unique={unique.ToString().ToLower()}&order={order.ToString().ToLower()}&dir={dir.ToString().ToLower()}&include_extras={includeExtras}&include_multilingual={includeMultilingual}&include_variations={includeVariations}&page={page}");
     }
     
-    public Task<Optional<Card>> NamedExactAsync(string name)
+    //FIXME: Add support for missing parameters: format, pretty, face, version
+    public Task<Optional<Card>> NamedExactAsync(string name, string? set = null)
     {
-        return _client.GetAsync<Card>($"cards/named?exact={name}");
+        return _client.GetAsync<Card>($"cards/named?exact={name}{(set is not null ? $"&set={set}" : "")}");
+    }
+    
+    //FIXME: Add support for missing parameters: format, pretty, face, version
+    public Task<Optional<Card>> NamedFuzzyAsync(string name, string? set = null)
+    {
+        return _client.GetAsync<Card>($"cards/named?fuzzy={name}{(set is not null ? $"&set={set}" : "")}");
+    }
+    
+    //FIXME: Add support for missing parameters: format, pretty
+    public Task<Optional<Catalog>> AutoCompleteAsync(string query, bool includeExtras = false)
+    {
+        if (string.IsNullOrEmpty(query))
+            throw new ArgumentException("Value cannot be null or empty.", nameof(query));
+        
+        if (query.Length > MAX_QUERY_LENGTH)
+            throw new ArgumentException($"Value must be at most {MAX_QUERY_LENGTH} characters long.", nameof(query));
+        
+        var encodedQuery = System.Net.WebUtility.UrlEncode(query);
+        
+        return _client.GetAsync<Catalog>($"cards/autocomplete?q={encodedQuery}&include_extras={includeExtras}");
     }
 
-    public Task<Optional<Card>> RandomAsync()
+    //FIXME: Add support for missing parameters: format, pretty, face, version
+    public Task<Optional<Card>> RandomAsync(string? query = null)
     {
-        return _client.GetAsync<Card>("cards/search?q=is%3Aslick+cmc%3Ecmc");
-        //return _client.GetAsync<Card>("cards/random");
+        if (query is null)
+            return _client.GetAsync<Card>("cards/random");
+        
+        if (query.Length > MAX_QUERY_LENGTH)
+            throw new ArgumentException($"Value must be at most {MAX_QUERY_LENGTH} characters long.", nameof(query));
+        
+        var encodedQuery = System.Net.WebUtility.UrlEncode(query);
+        
+        return _client.GetAsync<Card>($"cards/random?q={encodedQuery}");
+    }
+
+    //FIXME: Add support for missing parameters: pretty
+    public Task<Optional<ListObject<Card>>> CollectionAsync(CollectionParameters parameters)
+    {
+        var payload = new StringContent(JsonSerializer.Serialize(parameters, jsonSerializerOptions), Encoding.UTF8, "application/json");
+        return _client.PostAsync<ListObject<Card>>("cards/collection", payload);
+    }
+
+    //FIXME: Add support for missing parameters: format, pretty, face, version
+    public Task<Optional<Card>> ByCollectorNumberAsync(string set, string collectorNumber, Language? language = null)
+    {
+        if (string.IsNullOrEmpty(set))
+            throw new ArgumentException("Value cannot be null or empty.", nameof(set));
+        
+        if (set.Length < 3 || set.Length > 5)
+            throw new ArgumentException("Value must be between 3 and 5 characters long.", nameof(set));
+        
+        if (string.IsNullOrEmpty(collectorNumber))
+            throw new ArgumentException("Value cannot be null or empty.", nameof(collectorNumber));
+        
+        if (collectorNumber.Length > 10)
+            throw new ArgumentException("Value must be less than 11 characters long.", nameof(collectorNumber));
+
+        var encodedSet = System.Net.WebUtility.UrlEncode(set);
+        var encodedCollectorNumber = System.Net.WebUtility.UrlEncode(collectorNumber);
+        var languageQuery = language is not null ? $"/{ModelHelpers.GetJsonPropertyName(language)}" : "";
+                
+        return _client.GetAsync<Card>($"cards/{set}/{collectorNumber}{(language is not null ? $"/{ModelHelpers.GetJsonPropertyName(language)}" : "")}");
+    }
+    
+    //FIXME: Add support for missing parameters: format, pretty, face, version
+    public Task<Optional<Card>> ByMultiverseIdAsync(long multiverseId)
+    {
+        return _client.GetAsync<Card>($"cards/multiverse/{multiverseId}");
+    }
+    
+    //FIXME: Add support for missing parameters: format, pretty, face, version
+    public Task<Optional<Card>> ByMtgoIdAsync(long mtgoId)
+    {
+        return _client.GetAsync<Card>($"cards/mtgo/{mtgoId}");
+    }
+    
+    //FIXME: Add support for missing parameters: format, pretty, face, version
+    public Task<Optional<Card>> ByArenaIdAsync(long arenaId)
+    {
+        return _client.GetAsync<Card>($"cards/arena/{arenaId}");
+    }
+    
+    //FIXME: Add support for missing parameters: format, pretty, face, version
+    public Task<Optional<Card>> ByTcgPlayerIdAsync(long tcgPlayerId)
+    {
+        return _client.GetAsync<Card>($"cards/tcgplayer/{tcgPlayerId}");
+    }
+    
+    //FIXME: Add support for missing parameters: format, pretty, face, version
+    public Task<Optional<Card>> ByCardmarketIdAsync(long cardmarketId)
+    {
+        return _client.GetAsync<Card>($"cards/cardmarket/{cardmarketId}");
+    }
+    
+    //FIXME: Add support for missing parameters: format, pretty, face, version
+    public Task<Optional<Card>> ById(Guid id)
+    {
+        return _client.GetAsync<Card>($"cards/{id}");
     }
 }
