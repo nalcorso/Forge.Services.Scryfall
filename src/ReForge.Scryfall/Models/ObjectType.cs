@@ -14,5 +14,7 @@ public enum ObjectType
     [JsonPropertyName("ruling")]
     Ruling,
     [JsonPropertyName("set")]
-    Set
+    Set,
+    [JsonPropertyName("catalog")]
+    Catalog,
 }
