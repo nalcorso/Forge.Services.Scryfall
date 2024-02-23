@@ -4,8 +4,11 @@ namespace ReForge.Scryfall.Models;
 
 public class Catalog : ResponseObjectBase
 {
+    [JsonPropertyName("object")] 
+    public ObjectType Object { get; set; }
+    
     [JsonPropertyName("uri")] 
-    public required Uri Uri { get; set; }
+    public Uri? Uri { get; set; }
     
     [JsonPropertyName("total_values")] 
     public long TotalValues { get; set; }
