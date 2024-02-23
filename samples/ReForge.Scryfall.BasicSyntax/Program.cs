@@ -14,7 +14,11 @@ Console.WriteLine("Scryfall Scratchpad - Basic Syntax");
 var dumpConfig = DumpConfig.Default;
 dumpConfig.AddCustomTypeHandler(typeof(Uri), (o, type, arg3, arg4) => o.ToString());
 
-var consoleLogger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<ScryfallClient>();
+var consoleLogger = LoggerFactory.Create(builder => builder
+        .SetMinimumLevel(LogLevel.Debug)
+        .AddConsole()
+    )
+    .CreateLogger<ScryfallClient>();
 
 var scryfallClient = ScryfallClient.Create()
     .WithClient(new HttpClient())
@@ -30,7 +34,8 @@ var scryfallClient = ScryfallClient.Create()
 // var resultOr = await scryfallClient.Sets.ByIdAsync(Guid.Parse("2ec77b94-6d47-4891-a480-5d0b4e5c9372"));
 
 // var resultOr = await scryfallClient.Cards.SearchAsync("t:creature o:draw");
-// var resultOr = await scryfallClient.Cards.NamedExactAsync("Black Lotus");
+var resultOr = await scryfallClient.Cards.NamedExactAsync("Black Lotus");
+var _ = await scryfallClient.Cards.NamedExactAsync("Black Lotus");
 // var resultOr = await scryfallClient.Cards.NamedFuzzyAsync("Tarmog");
 // var resultOr = await scryfallClient.Cards.AutoCompleteAsync("Tarm");
 // var resultOr = await scryfallClient.Cards.RandomAsync();
@@ -58,7 +63,7 @@ var collectionParameters = new CollectionParametersBuilder()
 //var resultOr = await scryfallClient.BulkData.ByTypeAsync(BulkDataType.DefaultCards);
 
 //var resultOr = await scryfallClient.Migrations.AllAsync();
-var resultOr = await scryfallClient.Migrations.ByIdAsync(Guid.Parse("305c0821-3e14-446e-8288-08335575c00e"));
+//var resultOr = await scryfallClient.Migrations.ByIdAsync(Guid.Parse("305c0821-3e14-446e-8288-08335575c00e"));
 
 var result = resultOr.OrElseThrow();
 result.Dump();

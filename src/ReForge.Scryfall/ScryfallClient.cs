@@ -8,6 +8,9 @@ using ReForge.Scryfall.Models;
 
 namespace ReForge.Scryfall;
 
+/// <summary>
+/// Represents a client for interacting with the Scryfall API.
+/// </summary>
 public sealed class ScryfallClient
 {
     private readonly JsonSerializerOptions _optionsWithGlobalSettings = new() { Converters = { new JsonEnumMemberStringEnumConverter() } };
@@ -27,14 +30,49 @@ public sealed class ScryfallClient
     private readonly Lazy<ScryfallBulkDataAPI> _bulkData;
     private readonly Lazy<ScryfallMigrationsAPI> _migrations;
 
+    
+    /// <summary>
+    /// Provides access to the Scryfall Cards API.
+    /// </summary>
     public ScryfallCardsAPI Cards => _cards.Value;
+    
+    /// <summary>
+    /// Provides access to the Scryfall Sets API.
+    /// </summary>
     public ScryfallSetsAPI Sets => _sets.Value;
+    
+    /// <summary>
+    /// Provides access to the Scryfall Rulings API.
+    /// </summary>
     public ScryfallRulingsAPI Rulings => _rulings.Value;
+    
+    /// <summary>
+    /// Provides access to the Scryfall Symbology API.
+    /// </summary>
     public ScryfallSymbologyAPI Symbology => _symbology.Value;
+    
+    /// <summary>
+    /// Provides access to the Scryfall Catalog API.
+    /// </summary>
     public ScryfallCatalogAPI Catalog => _catalog.Value;
+    
+    /// <summary>
+    /// Provides access to the Scryfall Bulk Data API.
+    /// </summary>
     public ScryfallBulkDataAPI BulkData => _bulkData.Value;
+    
+    /// <summary>
+    /// Provides access to the Scryfall Migrations API.
+    /// </summary>
     public ScryfallMigrationsAPI Migrations => _migrations.Value;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ScryfallClient"/> class.
+    /// </summary>
+    /// <param name="client">The <see cref="HttpClient"/> used for making HTTP requests.</param>
+    /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
+    /// <param name="cache">The optional <see cref="IMemoryCache"/> used for caching responses.</param>
+    /// <param name="cacheOptions">The optional <see cref="MemoryCacheEntryOptions"/> for configuring cache options.</param>
     public ScryfallClient(HttpClient client, ILogger logger, IMemoryCache? cache, MemoryCacheEntryOptions? cacheOptions)
     {
         _httpClient = client;
@@ -56,6 +94,10 @@ public sealed class ScryfallClient
         _migrations = new Lazy<ScryfallMigrationsAPI>(() => new ScryfallMigrationsAPI(this));
     }
     
+    /// <summary>
+    /// Creates a new instance of the ScryfallClientBuilder class.
+    /// </summary>
+    /// <returns>A new instance of the ScryfallClientBuilder class.</returns>
     public static ScryfallClientBuilder Create()
     {
         return new ScryfallClientBuilder();

@@ -2,6 +2,10 @@
 
 namespace ReForge.Scryfall.APIs;
 
+/// <summary>
+/// API for interacting with the Scryfall Bulk Data API.
+/// </summary>
+/// <remarks>See <a href="https://scryfall.com/docs/api/bulk-data">Scryfall API Documentation</a> for more information.</remarks>
 public class ScryfallBulkDataAPI
 {
     private readonly ScryfallClient _client;

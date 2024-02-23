@@ -38,13 +38,17 @@ public enum SortOrder
     Desceding
 }
 
+/// <summary>
+/// API for interacting with the Scryfall Cards API.
+/// </summary>
+/// <remarks>See <a href="https://scryfall.com/docs/api/cards">Scryfall API Documentation</a> for more information.</remarks>
 //FIXME: We may want to implement an interface at some point for testing
 public class ScryfallCardsAPI
 {
-    private const int MAX_QUERY_LENGTH = 256;
+    private const int MaxQueryLength = 256;
     private readonly ScryfallClient _client;
     
-    private readonly JsonSerializerOptions jsonSerializerOptions = new()
+    private readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
     };
@@ -68,8 +72,8 @@ public class ScryfallCardsAPI
         if (string.IsNullOrEmpty(query))
             throw new ArgumentException("Value cannot be null or empty.", nameof(query));
         
-        if (query.Length > MAX_QUERY_LENGTH)
-            throw new ArgumentException($"Value must be at most {MAX_QUERY_LENGTH} characters long.", nameof(query));
+        if (query.Length > MaxQueryLength)
+            throw new ArgumentException($"Value must be at most {MaxQueryLength} characters long.", nameof(query));
         
         if (page < 1)
             throw new ArgumentOutOfRangeException(nameof(page), "Value must be at least 1.");
@@ -97,8 +101,8 @@ public class ScryfallCardsAPI
         if (string.IsNullOrEmpty(query))
             throw new ArgumentException("Value cannot be null or empty.", nameof(query));
         
-        if (query.Length > MAX_QUERY_LENGTH)
-            throw new ArgumentException($"Value must be at most {MAX_QUERY_LENGTH} characters long.", nameof(query));
+        if (query.Length > MaxQueryLength)
+            throw new ArgumentException($"Value must be at most {MaxQueryLength} characters long.", nameof(query));
         
         var encodedQuery = System.Net.WebUtility.UrlEncode(query);
         
@@ -111,8 +115,8 @@ public class ScryfallCardsAPI
         if (query is null)
             return _client.GetAsync<Card>("cards/random");
         
-        if (query.Length > MAX_QUERY_LENGTH)
-            throw new ArgumentException($"Value must be at most {MAX_QUERY_LENGTH} characters long.", nameof(query));
+        if (query.Length > MaxQueryLength)
+            throw new ArgumentException($"Value must be at most {MaxQueryLength} characters long.", nameof(query));
         
         var encodedQuery = System.Net.WebUtility.UrlEncode(query);
         
@@ -122,7 +126,7 @@ public class ScryfallCardsAPI
     //FIXME: Add support for missing parameters: pretty
     public Task<Optional<ListObject<Card>>> CollectionAsync(CollectionParameters parameters)
     {
-        var payload = new StringContent(JsonSerializer.Serialize(parameters, jsonSerializerOptions), Encoding.UTF8, "application/json");
+        var payload = new StringContent(JsonSerializer.Serialize(parameters, _jsonSerializerOptions), Encoding.UTF8, "application/json");
         return _client.PostAsync<ListObject<Card>>("cards/collection", payload);
     }
 
