@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using System.Text.Json.Serialization;
 
 namespace ReForge.Scryfall.Models;
@@ -11,7 +12,7 @@ public class BulkData : ResponseObjectBase
     public required Uri Uri { get; set; }
     
     [JsonPropertyName("type")] 
-    public required string Type { get; set; }
+    public BulkDataType Type { get; set; }
     
     [JsonPropertyName("name")] 
     public required string Name { get; set; }
@@ -32,5 +33,5 @@ public class BulkData : ResponseObjectBase
     public required string ContentType { get; set; }
     
     [JsonPropertyName("content_encoding")]
-    public required string ContentEncoding { get; set; }
+    public required ContentEncoding ContentEncoding { get; set; }
 }

@@ -1,4 +1,6 @@
-﻿namespace ReForge.Scryfall.APIs;
+﻿using ReForge.Scryfall.Models;
+
+namespace ReForge.Scryfall.APIs;
 
 public class ScryfallBulkDataAPI
 {
@@ -8,4 +10,23 @@ public class ScryfallBulkDataAPI
     {
         _client = client;
     }
+    
+    //FIXME: Add support for missing parameters: pretty
+    public Task<Optional<ListObject<BulkData>>> AllAsync()
+    {
+        return _client.GetAsync<ListObject<BulkData>>("bulk-data");
+    }
+    
+    //FIXME: Add support for missing parameters: format, pretty
+    public Task<Optional<BulkData>> ByIdAsync(Guid id)
+    {
+        return _client.GetAsync<BulkData>($"bulk-data/{id}");
+    }
+    
+    //FIXME: Add support for missing parameters: format, pretty
+    public Task<Optional<BulkData>> ByTypeAsync(BulkDataType type)
+    {
+        return _client.GetAsync<BulkData>($"bulk-data/{ModelHelpers.GetJsonPropertyName(type)}");
+    }
+
 }

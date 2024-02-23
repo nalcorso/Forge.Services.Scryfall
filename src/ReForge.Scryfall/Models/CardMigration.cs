@@ -26,5 +26,5 @@ public class CardMigration : ResponseObjectBase
     public required string Note { get; set; }
     
     [JsonPropertyName("metadata")] 
-    public required List<string> MetaData { get; set; }
+    public required MigrationMetadata MetaData { get; set; }
 }

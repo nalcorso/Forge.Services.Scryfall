@@ -91,7 +91,7 @@ public sealed class ScryfallClient
         }
         catch (JsonException ex)
         {
-            _logger.LogError("Error in response: {response}", await response.Content.ReadAsStringAsync());
+            
         }
         
         scryfallResponse.Seek(0, SeekOrigin.Begin);

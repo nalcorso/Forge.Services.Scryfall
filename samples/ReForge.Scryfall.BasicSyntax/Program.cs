@@ -5,7 +5,6 @@ using Dumpify;
 using Microsoft.Extensions.Logging;
 using ReForge.Scryfall;
 using ReForge.Scryfall.APIs;
-using ReForge.Scryfall.Models;
 
 Console.OutputEncoding = Encoding.UTF8;
 
@@ -24,11 +23,12 @@ var scryfallClient = ScryfallClient.Create()
     .Build();
 
 
-// var resultOr = await scryfallClient.Sets.AllAsync();
+//var resultOr = await scryfallClient.Sets.AllAsync();
 // var resultOr = await scryfallClient.Sets.ByCodeAsync("uma");
 // var resultOr = await scryfallClient.Sets.ByCodeAsync("");
 // var resultOr = await scryfallClient.Sets.ByTcgPlayerIdAsync(1909);
 // var resultOr = await scryfallClient.Sets.ByIdAsync(Guid.Parse("2ec77b94-6d47-4891-a480-5d0b4e5c9372"));
+
 // var resultOr = await scryfallClient.Cards.SearchAsync("t:creature o:draw");
 // var resultOr = await scryfallClient.Cards.NamedExactAsync("Black Lotus");
 // var resultOr = await scryfallClient.Cards.NamedFuzzyAsync("Tarmog");
@@ -44,7 +44,21 @@ var collectionParameters = new CollectionParametersBuilder()
 
 //var resultOr = await scryfallClient.Cards.CollectionAsync(collectionParameters);
 //var resultOr = await scryfallClient.Cards.ByCollectorNumberAsync("khm", "1");
-var resultOr = await scryfallClient.Cards.ByCollectorNumberAsync("khm", "1", Language.Japanese);
+//var resultOr = await scryfallClient.Cards.ByCollectorNumberAsync("khm", "1", Language.Japanese);
+
+//var resultOr = await scryfallClient.Rulings.ByMultiverseIdAsync(3255);
+
+//var resultOr = await scryfallClient.Symbology.AllAsync();
+//var resultOr = await scryfallClient.Symbology.ParseManaCostAsync("RUx");
+
+//var resultOr = await scryfallClient.Catalog.WatermarksAsync();
+
+//var resultOr = await scryfallClient.BulkData.AllAsync();
+//var resultOr = await scryfallClient.BulkData.ByIdAsync(Guid.Parse("2ec77b94-6d47-4891-a480-5d0b4e5c9372"));
+//var resultOr = await scryfallClient.BulkData.ByTypeAsync(BulkDataType.DefaultCards);
+
+//var resultOr = await scryfallClient.Migrations.AllAsync();
+var resultOr = await scryfallClient.Migrations.ByIdAsync(Guid.Parse("305c0821-3e14-446e-8288-08335575c00e"));
 
 var result = resultOr.OrElseThrow();
 result.Dump();

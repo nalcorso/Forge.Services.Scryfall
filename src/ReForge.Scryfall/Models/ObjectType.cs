@@ -17,4 +17,6 @@ public enum ObjectType
     Set,
     [JsonPropertyName("catalog")]
     Catalog,
+    [JsonPropertyName("mana_cost")]
+    ManaCost,
 }
