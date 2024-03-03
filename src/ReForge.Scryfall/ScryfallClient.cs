@@ -8,10 +8,21 @@ using ReForge.Scryfall.Models;
 
 namespace ReForge.Scryfall;
 
+public interface IScryfallClient
+{
+    ScryfallCardsAPI Cards { get; }
+    ScryfallSetsAPI Sets { get; }
+    ScryfallRulingsAPI Rulings { get; }
+    ScryfallSymbologyAPI Symbology { get; }
+    ScryfallCatalogAPI Catalog { get; }
+    ScryfallBulkDataAPI BulkData { get; }
+    ScryfallMigrationsAPI Migrations { get; }
+}
+
 /// <summary>
 /// Represents a client for interacting with the Scryfall API.
 /// </summary>
-public sealed class ScryfallClient
+public sealed class ScryfallClient : IScryfallClient
 {
     private readonly JsonSerializerOptions _optionsWithGlobalSettings = new() { Converters = { new JsonEnumMemberStringEnumConverter() } };
 
