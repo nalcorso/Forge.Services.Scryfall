@@ -9,10 +9,7 @@
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0-preview.1.24080.9" />
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0-preview.1.24080.9" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\submodules\ReForge.Optional\src\ReForge.Optional\ReForge.Optional.csproj" />
+      <PackageReference Include="ReForge.Optional" Version="0.1.0-beta.1" />
     </ItemGroup>
 
 </Project>
