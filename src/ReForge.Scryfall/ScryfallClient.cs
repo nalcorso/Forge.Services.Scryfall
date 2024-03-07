@@ -1,7 +1,9 @@
 ﻿using System.Net.Http.Headers;
 using System.Text.Json;
+using ComposableAsync;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using RateLimiter;
 using ReForge.Scryfall.APIs;
 using ReForge.Scryfall.Converters;
 using ReForge.Scryfall.Models;
@@ -24,6 +26,8 @@ public interface IScryfallClient
 /// </summary>
 public sealed class ScryfallClient : IScryfallClient
 {
+    private readonly TimeLimiter _rateConstraint = TimeLimiter.GetFromMaxCountByInterval(10, TimeSpan.FromSeconds(1));
+
     private readonly JsonSerializerOptions _optionsWithGlobalSettings = new() { Converters = { new JsonEnumMemberStringEnumConverter() } };
 
     private readonly HttpClient _httpClient;
@@ -129,7 +133,8 @@ public sealed class ScryfallClient : IScryfallClient
         }
         
         _logger.LogDebug("Cache miss for {url}", url);
-        
+
+        await _rateConstraint;
         var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
         var scryfallResponse = await response.Content.ReadAsStreamAsync();
 
@@ -142,7 +147,7 @@ public sealed class ScryfallClient : IScryfallClient
                 return Optional<T>.Of(result);
             }
         }
-        catch (JsonException ex)
+        catch (JsonException)
         {
             
         }
@@ -164,6 +169,8 @@ public sealed class ScryfallClient : IScryfallClient
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
         ArgumentNullException.ThrowIfNull(content, nameof(content));
         
+        await _rateConstraint;
+
         var response = await _httpClient.PostAsync(url, content).ConfigureAwait(false);
         var scryfallResponse = await response.Content.ReadAsStreamAsync();
 
@@ -175,7 +182,7 @@ public sealed class ScryfallClient : IScryfallClient
                 return Optional<T>.Of(result);
             }
         }
-        catch (JsonException ex)
+        catch (JsonException)
         {
             _logger.LogError("Error in response: {response}", await response.Content.ReadAsStringAsync());
         }
