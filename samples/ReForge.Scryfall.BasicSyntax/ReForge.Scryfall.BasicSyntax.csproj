@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\ReForge.Scryfall\ReForge.Scryfall.csproj" />
+      <ProjectReference Include="..\..\src\Forge.Services.Scryfall\Forge.Services.Scryfall.csproj" />
     </ItemGroup>
 
     <ItemGroup>

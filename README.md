@@ -1,6 +1,6 @@
-# ReForge.Scryfall
+# Forge.Services.Scryfall
 
-ReForge.Scryfall is a .NET library for interacting with the Scryfall API. It provides a simple and intuitive way to access various Scryfall services such as Cards, Sets, Rulings, Symbology, Catalog, Bulk Data, and Migrations.
+Forge.Services.Scryfall is a .NET library for interacting with the Scryfall API. It provides a simple and intuitive way to access various Scryfall services such as Cards, Sets, Rulings, Symbology, Catalog, Bulk Data, and Migrations.
 
 ## Features
 
