@@ -35,7 +35,7 @@ public sealed class ScryfallClient : IScryfallClient
     private readonly IMemoryCache? _cache;
     private readonly MemoryCacheEntryOptions? _cacheOptions;
 
-    private readonly string _userAgent = "ReForge/1.0 (Scryfall.NET)";
+    private readonly string _userAgent = "Forge/1.0 (Forge.Services.Scryfall)";
     
     private readonly Lazy<ScryfallCardsAPI> _cards;
     private readonly Lazy<ScryfallSetsAPI> _sets;
