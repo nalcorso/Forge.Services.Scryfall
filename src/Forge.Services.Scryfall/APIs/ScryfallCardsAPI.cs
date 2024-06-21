@@ -131,6 +131,7 @@ public class ScryfallCardsAPI
     }
 
     //FIXME: Add support for missing parameters: format, pretty, face, version
+    //FIXME: Result can be null if the card is not found (eg searching for UNF 202 instead of UNF 202a)
     public Task<Card> ByCollectorNumberAsync(string set, string collectorNumber, Language? language = null)
     {
         if (string.IsNullOrEmpty(set))
