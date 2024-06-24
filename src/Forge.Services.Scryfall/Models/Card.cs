@@ -128,7 +128,7 @@ public class Card : ResponseObjectBase
     public List<Guid>? ArtistIds { get; set; }
     
     [JsonPropertyName("attraction_lights")]
-    public List<string>? AttractionLights { get; set; }
+    public List<int>? AttractionLights { get; set; }
     
     [JsonPropertyName("booster")] 
     public bool Booster { get; set; }
