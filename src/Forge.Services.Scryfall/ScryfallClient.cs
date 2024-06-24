@@ -141,27 +141,48 @@ public sealed class ScryfallClient : IScryfallClient
         try
         {
             var result = await JsonSerializer.DeserializeAsync<T>(scryfallResponse, _optionsWithGlobalSettings);
-            if (result is not null)
+            if (result is null)
             {
-                _cache?.Set(url, result, _cacheOptions);
-                return result;
+                throw new InvalidOperationException("Failed to deserialize response");
             }
+
+            _cache?.Set(url, result, _cacheOptions);
+            return result;
         }
-        catch (JsonException)
+        catch (JsonException e)
         {
-            //Fixme: Log message?
+            _logger.LogError(e, "Error in response: {response}", await response.Content.ReadAsStringAsync());
         }
         
         scryfallResponse.Seek(0, SeekOrigin.Begin);
-        var error = await JsonSerializer.DeserializeAsync<Error>(scryfallResponse, _optionsWithGlobalSettings);
-        if (error is null) throw new InvalidOperationException("Failed to deserialize error response");
-        
-        foreach (var warning in error.Warnings ?? Enumerable.Empty<string>())
+        try 
         {
-            _logger.LogWarning(warning);
+            var error = await JsonSerializer.DeserializeAsync<Error>(scryfallResponse, _optionsWithGlobalSettings);
+            if (error is not null)
+            {
+                foreach (var warning in error.Warnings ?? Enumerable.Empty<string>())
+                {
+                    _logger.LogWarning(warning);
+                }
+                
+                throw new InvalidOperationException(error.Details);
+            }
+        }
+        catch (JsonException e)
+        {
+            _logger.LogError(e, "Error in response: {response}", await response.Content.ReadAsStringAsync());
         }
         
-        throw new InvalidOperationException(error.Details);
+        throw new InvalidOperationException("Failed to deserialize error response");
+        // var error = await JsonSerializer.DeserializeAsync<Error>(scryfallResponse, _optionsWithGlobalSettings);
+        // if (error is null) throw new InvalidOperationException("Failed to deserialize error response");
+        
+        // foreach (var warning in error.Warnings ?? Enumerable.Empty<string>())
+        // {
+        //     _logger.LogWarning(warning);
+        // }
+        //
+        // throw new InvalidOperationException(error.Details);
     }
     
     internal async Task<T> PostAsync<T>(string url, HttpContent content) where T : ResponseObjectBase
